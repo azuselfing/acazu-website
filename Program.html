@@ -1,0 +1,427 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    <!-- 
+        ★【編集ポイント：ページタイトル】
+        ブラウザのタブに表示されるタイトルです。
+    -->
+    <title>STEP 1 | AZU Selfing Program</title>
+    
+    <!-- =========================================================================
+         1. フォントの読み込み (Google Fonts)
+         -------------------------------------------------------------------------
+         - Noto Sans JP: 本文用
+         - Shippori Mincho: 見出し用
+         - Alex Brush: 装飾用
+    ========================================================================== -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@300;400;500;700&family=Shippori+Mincho:wght@400;500;600&family=Alex+Brush&display=swap" rel="stylesheet">
+    
+    <!-- =========================================================================
+         2. Tailwind CSS 設定 (デザインの基本設定)
+         -------------------------------------------------------------------------
+         サイト全体のカラーパレットやフォントをここで一括管理しています。
+    ========================================================================== -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    // ★ カラーパレット（ここを変えると全体の色が変わります）
+                    colors: {
+                        azu: {
+                            bg: '#F8F9FB',          // 背景色
+                            surface: '#FFFFFF',     // コンテンツ背景色
+                            pink: '#FADCE6',        // メインテーマ（ピンク）
+                            blue: '#DFF0F6',        // サブテーマ（ブルー）
+                            accentPink: '#DFA6B9',  // アクセント（濃いピンク）
+                            accentBlue: '#9DC2D9',  // アクセント（濃いブルー）
+                            text: '#444444',        // 文字色
+                            subText: '#777777',     // 薄い文字色
+                            gold: '#B89679',        // 装飾用ゴールド
+                            border: '#E5E7EB'       // 枠線の色
+                        }
+                    },
+                    // ★ フォント設定
+                    fontFamily: {
+                        sans: ['"Noto Sans JP"', 'sans-serif'],
+                        serif: ['"Shippori Mincho"', 'serif'],
+                        script: ['"Alex Brush"', 'cursive'],
+                    },
+                    // ★ 影の設定
+                    boxShadow: {
+                        'card': '0 4px 20px rgba(0, 0, 0, 0.04)',
+                    }
+                }
+            }
+        }
+    </script>
+
+    <!-- =========================================================================
+         3. カスタム CSS (ここから下を style.css として保存可能です)
+         -------------------------------------------------------------------------
+         Tailwind CSSで補えない詳細なスタイル定義です。
+         CSSファイルを分ける場合は、<style>タグの中身を切り取ってください。
+    ========================================================================== -->
+    <style>
+        /* * -----------------------------------------------------------------
+         * ベーススタイル
+         * -----------------------------------------------------------------
+         */
+        
+        /* スムーズスクロール有効化 */
+        html { scroll-behavior: smooth; }
+        
+        /* Body全体の装飾 */
+        body {
+            background-color: #F8F9FB;
+            color: #444444;
+            letter-spacing: 0.05em;
+            line-height: 1.8;
+            /* 背景グラデーション（ふんわりした光の演出） */
+            background-image: 
+                radial-gradient(circle at 0% 0%, rgba(250, 220, 230, 0.6) 0%, transparent 45%),
+                radial-gradient(circle at 100% 0%, rgba(223, 240, 246, 0.6) 0%, transparent 45%);
+            background-attachment: fixed;
+        }
+
+        /* * -----------------------------------------------------------------
+         * コンポーネントスタイル
+         * -----------------------------------------------------------------
+         */
+
+        /* ヘッダー：すりガラス風のデザイン */
+        .glass-header {
+            background: rgba(255, 255, 255, 0.9);
+            backdrop-filter: blur(12px);
+            border-bottom: 1px solid rgba(229, 231, 235, 0.6);
+        }
+
+        /* コンテンツカード：白い角丸ボックス */
+        .content-block {
+            background: #FFFFFF;
+            border-radius: 20px;
+            padding: 32px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.03);
+            border: 1px solid rgba(243, 244, 246, 1);
+            margin-bottom: 32px;
+        }
+        /* スマホなどの狭い画面での余白調整 */
+        @media (max-width: 768px) {
+            .content-block { padding: 24px; }
+        }
+
+        /* * -----------------------------------------------------------------
+         * ナビゲーション・リンクスタイル
+         * -----------------------------------------------------------------
+         */
+
+        /* 目次などのリンクホバー時 */
+        .toc-link:hover {
+            color: #DFA6B9;
+            text-decoration: underline;
+        }
+
+        /* カリキュラム一覧の「現在地」表示 */
+        .nav-item.active {
+            background-color: #FADCE6;
+            color: #444444;
+            font-weight: bold;
+            border-left: 4px solid #DFA6B9;
+        }
+
+        /* ページ内リンクで飛んだ時の位置調整（ヘッダー被り防止） */
+        .scroll-mt-24 {
+            scroll-margin-top: 6rem;
+        }
+    </style>
+</head>
+
+<body class="font-sans antialiased min-h-screen flex flex-col">
+
+    <!-- =========================================================================
+         ヘッダーエリア
+         ========================================================================= -->
+    <header class="glass-header fixed w-full top-0 z-50 h-16 md:h-20 flex items-center shadow-sm">
+        <div class="max-w-6xl mx-auto px-4 md:px-6 w-full flex justify-between items-center">
+            
+            <!-- ロゴ -->
+            <a href="AZU_Selfing_Program_Top.html" class="flex items-center gap-3 hover:opacity-80 transition">
+                <img src="https://placehold.co/100x100/fadce6/444444?text=Logo" alt="Logo" class="h-8 w-8 md:h-9 md:w-9 rounded-full border border-gray-100 shadow-sm">
+                <div class="flex flex-col">
+                    <span class="font-serif text-xs md:text-sm tracking-[0.1em] text-azu-text font-medium uppercase">AZU SELFING</span>
+                    <span class="text-[8px] md:text-[9px] text-azu-gold tracking-widest font-bold">MEMBERSHIP</span>
+                </div>
+            </a>
+
+            <!-- ユーザーメニュー -->
+            <div class="flex items-center gap-3">
+                <a href="AZU_Selfing_Program_Top.html" class="text-xs text-azu-subText hover:text-azu-text mr-2 hidden md:block">トップへ戻る</a>
+                <div class="w-8 h-8 rounded-full bg-azu-pink flex items-center justify-center text-xs shadow-sm border border-white">👩‍🦰</div>
+            </div>
+        </div>
+    </header>
+
+    <!-- =========================================================================
+         メインコンテンツエリア
+         ========================================================================= -->
+    <main class="flex-grow pt-24 pb-20 px-4 md:px-8">
+        
+        <!-- 中央寄せコンテナ -->
+        <div class="max-w-4xl mx-auto space-y-8">
+
+            <!-- パンくずリスト -->
+            <nav class="text-[10px] text-azu-subText flex items-center gap-2">
+                <a href="AZU_Selfing_Program_Top.html" class="hover:text-azu-text">HOME</a>
+                <span>&gt;</span>
+                <span class="text-azu-text font-bold">STEP 1: 安心感の土台づくり</span>
+            </nav>
+
+            <!-- ★★★ 記事本体ブロック ★★★ -->
+            <article class="content-block">
+                
+                <!-- 記事ヘッダー -->
+                <div class="mb-8 border-b border-azu-border pb-6">
+                    <span class="inline-block px-3 py-1 bg-azu-blue text-[10px] font-bold text-azu-accentBlue rounded-full mb-3">STEP 1</span>
+                    <h1 class="font-serif text-2xl md:text-3xl text-azu-text leading-relaxed">
+                        安心感の土台づくり
+                    </h1>
+                    <p class="text-xs text-azu-subText mt-2">所要時間目安: 15分 / スライド枚数: 20枚</p>
+                </div>
+
+                <!-- 導入文 -->
+                <div class="prose prose-sm max-w-none text-azu-text leading-loose mb-10">
+                    <p>
+                        このステップでは、アダルトチルドレン克服の第一歩として<strong>「神経系を整える」</strong>アプローチを学びます。<br>
+                        思考を変えようとする前に、まずは身体が「今は安全だ」と感じられる状態を作ることが大切です。
+                    </p>
+                </div>
+
+                <!-- 記事内目次 -->
+                <div class="bg-azu-bg p-6 rounded-xl border border-azu-border mb-16">
+                    <p class="font-serif text-sm font-bold text-azu-text mb-3">INDEX</p>
+                    <ul class="space-y-2 text-xs md:text-sm text-azu-text/80 list-disc list-inside">
+                        <li><a href="#section-1" class="toc-link transition">1. 「安心」はどこにある？</a></li>
+                        <li><a href="#section-2" class="toc-link transition">2. 神経系の仕組みを知る</a></li>
+                        <li><a href="#section-3" class="toc-link transition">3. 今日からできる実践ワーク</a></li>
+                        <li><a href="#section-4" class="toc-link transition">4. まとめ</a></li>
+                    </ul>
+                </div>
+
+                <!-- スライド解説エリア -->
+                <div class="space-y-24">
+                    
+                    <!-- Section 1 -->
+                    <section id="section-1" class="scroll-mt-24">
+                        <div class="flex items-center gap-4 mb-6">
+                            <span class="font-script text-4xl text-azu-accentPink opacity-50">01</span>
+                            <h3 class="font-serif text-xl font-bold text-azu-text">「安心」はどこにある？</h3>
+                        </div>
+                        <div class="w-full aspect-video bg-white border border-azu-border rounded-xl shadow-sm mb-8 overflow-hidden flex items-center justify-center relative">
+                            <div class="text-center">
+                                <p class="font-serif text-3xl text-azu-text/10 mb-2">SLIDE 01</p>
+                                <p class="text-xs text-azu-subText">安心＝身体感覚のイメージ図</p>
+                            </div>
+                        </div>
+                        <div class="space-y-6 text-azu-text text-sm leading-loose">
+                            <p>
+                                私たちはよく「頭ではわかっているけど、不安が消えない」という状態になります。
+                                これは、安心感が「頭（思考）」ではなく「身体（神経系）」で作られるものだからです。
+                            </p>
+                        </div>
+                    </section>
+
+                    <!-- Section 2 -->
+                    <section id="section-2" class="scroll-mt-24">
+                        <div class="flex items-center gap-4 mb-6">
+                            <span class="font-script text-4xl text-azu-accentBlue opacity-50">02</span>
+                            <h3 class="font-serif text-xl font-bold text-azu-text">神経系の仕組みを知る</h3>
+                        </div>
+                        <div class="w-full aspect-video bg-white border border-azu-border rounded-xl shadow-sm mb-8 overflow-hidden flex items-center justify-center">
+                            <div class="text-center">
+                                <p class="font-serif text-3xl text-azu-text/10 mb-2">SLIDE 02</p>
+                                <p class="text-xs text-azu-subText">ポリヴェーガル理論の図解</p>
+                            </div>
+                        </div>
+                        <div class="space-y-6 text-azu-text text-sm leading-loose">
+                            <p>
+                                自律神経には「交感神経（アクセル）」と「副交感神経（ブレーキ）」があります。
+                                ACの方は、過去の環境適応のために、常にアクセル全開か、もしくは急ブレーキを踏み続けている状態になりがちです。
+                            </p>
+                            <div class="bg-azu-blue/30 p-5 rounded-lg border border-azu-accentBlue/30">
+                                <p class="font-bold text-azu-text mb-2 text-xs">💡 チェックポイント</p>
+                                <ul class="list-disc list-inside space-y-1 text-xs">
+                                    <li>些細な音にビクッとする</li>
+                                    <li>常に誰かの顔色を伺っている</li>
+                                    <li>家に帰るとドッと疲れて動けなくなる</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </section>
+
+                    <!-- Section 3 -->
+                    <section id="section-3" class="scroll-mt-24">
+                        <div class="flex items-center gap-4 mb-6">
+                            <span class="font-script text-4xl text-azu-gold opacity-50">03</span>
+                            <h3 class="font-serif text-xl font-bold text-azu-text">今日からできる実践</h3>
+                        </div>
+                        <div class="w-full aspect-video bg-white border border-azu-border rounded-xl shadow-sm mb-8 overflow-hidden flex items-center justify-center">
+                            <div class="text-center">
+                                <p class="font-serif text-3xl text-azu-text/10 mb-2">SLIDE 03</p>
+                                <p class="text-xs text-azu-subText">グラウンディングのイラスト</p>
+                            </div>
+                        </div>
+                        <div class="space-y-6 text-azu-text text-sm leading-loose">
+                            <p>
+                                「今、ここ」に戻るための<strong>グラウンディング・ワーク</strong>を一緒にやってみましょう。
+                            </p>
+                            <div class="space-y-4">
+                                <div class="flex gap-4">
+                                    <div class="flex-shrink-0 w-6 h-6 rounded-full bg-azu-pink text-azu-accentPink flex items-center justify-center font-bold text-xs">1</div>
+                                    <p>椅子に深く座り、足の裏が床についている感覚を確かめます。</p>
+                                </div>
+                                <div class="flex gap-4">
+                                    <div class="flex-shrink-0 w-6 h-6 rounded-full bg-azu-pink text-azu-accentPink flex items-center justify-center font-bold text-xs">2</div>
+                                    <p>ゆっくりと息を吐きながら、身体の重みを椅子に預けます。</p>
+                                </div>
+                                <div class="flex gap-4">
+                                    <div class="flex-shrink-0 w-6 h-6 rounded-full bg-azu-pink text-azu-accentPink flex items-center justify-center font-bold text-xs">3</div>
+                                    <p>周りを見渡し、「赤いもの」を3つ見つけて心の中で唱えます。</p>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+
+                    <!-- まとめ -->
+                    <section id="section-4" class="scroll-mt-24">
+                        <div class="border-t border-azu-border pt-10 text-center">
+                            <h3 class="font-serif text-lg font-bold text-azu-text mb-4">本日のまとめ</h3>
+                            <p class="text-sm text-azu-subText leading-relaxed">
+                                お疲れ様でした。<br>
+                                まずは「自分の状態に気づく」だけで十分です。<br>
+                                焦らず、少しずつ安心感を育てていきましょう。
+                            </p>
+                        </div>
+                    </section>
+
+                </div>
+            </article>
+
+            <!-- 完了・次へボタン -->
+            <div class="flex flex-col sm:flex-row items-center justify-between gap-4 p-6 bg-white rounded-2xl border border-azu-border shadow-sm">
+                <div class="flex items-center gap-3">
+                    <input type="checkbox" id="mark-complete" class="w-5 h-5 text-azu-accentPink border-gray-300 rounded focus:ring-azu-accentPink cursor-pointer">
+                    <label for="mark-complete" class="text-sm text-azu-text cursor-pointer select-none">このステップを完了にする</label>
+                </div>
+                <a href="#" class="px-8 py-3 bg-azu-accentPink text-white text-sm font-bold rounded-full shadow-md hover:bg-azu-gold hover:shadow-lg transition transform hover:-translate-y-0.5">
+                    次のステップへ進む &rarr;
+                </a>
+            </div>
+
+            <!-- =========================================================================
+                 ★ フッターナビゲーションエリア (元サイドバーの内容をここに移動)
+                 -------------------------------------------------------------------------
+                 ご要望通り、各ブロックを「横長」にし、「縦」に積み重ねて配置しています。
+                 space-y-8 で各ブロックの間隔を空けています。
+                 ========================================================================= -->
+            <section class="space-y-8 pt-8">
+
+                <!-- 1. カリキュラム目次 (横長配置) -->
+                <div class="bg-white rounded-2xl border border-azu-border shadow-sm overflow-hidden">
+                    <div class="bg-azu-bg px-6 py-4 border-b border-azu-border">
+                        <h3 class="font-serif text-sm font-bold text-azu-text">カリキュラム一覧</h3>
+                    </div>
+                    <div class="p-4">
+                        <ul class="space-y-2">
+                            <li>
+                                <a href="AZU_Selfing_Program_Content.html" class="nav-item active block px-4 py-3 rounded-lg text-xs transition flex items-center justify-between">
+                                    <span>STEP 1: 安心感の土台</span>
+                                    <span class="text-[10px] bg-white px-2 py-0.5 rounded-full border border-azu-accentPink text-azu-accentPink">NOW</span>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="#" class="nav-item block px-4 py-3 rounded-lg text-xs text-azu-subText hover:bg-azu-bg transition flex items-center justify-between">
+                                    <span>STEP 2: 感情デトックス</span>
+                                    <span class="text-[10px]">🔒</span>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="#" class="nav-item block px-4 py-3 rounded-lg text-xs text-azu-subText hover:bg-azu-bg transition flex items-center justify-between">
+                                    <span>STEP 3: 自分軸と境界線</span>
+                                    <span class="text-[10px]">🔒</span>
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- 2. 資料ダウンロード (横長配置) -->
+                <div class="bg-white rounded-2xl border border-azu-border shadow-sm p-6">
+                    <h3 class="font-serif text-sm font-bold text-azu-text mb-4 flex items-center gap-2">
+                        <span>📥</span> 配布資料
+                    </h3>
+                    <!-- 横長になったので、アイテムを2列(md以上)で表示して見やすく調整 -->
+                    <ul class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <li>
+                            <a href="#" class="flex items-center gap-3 p-3 rounded-xl border border-azu-border hover:bg-azu-pink hover:border-azu-accentPink transition group h-full">
+                                <div class="w-8 h-8 bg-azu-bg rounded-full flex items-center justify-center text-xs group-hover:bg-white">📄</div>
+                                <div class="flex-1">
+                                    <p class="text-xs font-bold text-azu-text">講義スライド (PDF)</p>
+                                </div>
+                                <span class="text-azu-accentBlue group-hover:text-azu-gold">⬇</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#" class="flex items-center gap-3 p-3 rounded-xl border border-azu-border hover:bg-azu-pink hover:border-azu-accentPink transition group h-full">
+                                <div class="w-8 h-8 bg-azu-bg rounded-full flex items-center justify-center text-xs group-hover:bg-white">✍️</div>
+                                <div class="flex-1">
+                                    <p class="text-xs font-bold text-azu-text">ワークシート (PDF)</p>
+                                </div>
+                                <span class="text-azu-accentBlue group-hover:text-azu-gold">⬇</span>
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+
+                <!-- 3. 質問サポート (横長配置) -->
+                <div class="bg-gradient-to-br from-azu-blue to-white rounded-2xl border border-white shadow-sm p-6 text-center">
+                    <div class="flex flex-col md:flex-row items-center justify-between gap-6">
+                        <div class="text-left flex items-center gap-4">
+                            <span class="text-4xl">💌</span>
+                            <div>
+                                <h3 class="font-serif text-sm font-bold text-azu-text mb-1">ご質問はこちら</h3>
+                                <p class="text-[10px] text-azu-subText leading-relaxed">
+                                    講義内容でわからないことがあれば、<br class="hidden md:inline">LINEにてお気軽にご相談ください。
+                                </p>
+                            </div>
+                        </div>
+                        <a href="#" class="w-full md:w-auto px-8 py-3 bg-white border border-azu-accentBlue text-azu-accentBlue text-xs font-bold rounded-full hover:bg-azu-accentBlue hover:text-white transition">
+                            LINEで質問する
+                        </a>
+                    </div>
+                </div>
+
+            </section>
+            <!-- フッターナビゲーションエリア終了 -->
+
+        </div>
+    </main>
+
+    <!-- =========================================================================
+         フッターエリア
+         ========================================================================= -->
+    <footer class="bg-white border-t border-azu-border mt-auto">
+        <div class="max-w-6xl mx-auto px-6 py-8 flex flex-col md:flex-row items-center justify-between gap-4">
+            <div class="text-[10px] text-azu-subText">
+                <a href="AZU_Selfing_Program_Top.html" class="hover:text-azu-text">トップページに戻る</a>
+            </div>
+            <p class="text-[9px] text-azu-subText/50 tracking-widest">© AZU SELFING PROGRAM.</p>
+        </div>
+    </footer>
+
+</body>
+</html>
